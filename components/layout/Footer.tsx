@@ -42,7 +42,7 @@ export function Footer() {
         </div>
       </div>
       <div className="container mx-auto mt-12 pt-6 border-t border-cream/50 text-center text-xs">
-        <p>&copy; {new Date().getFullYear()} Yellow Chips. All rights reserved.</p>
+        <p>&copy; 2025 Yellow Chips. All rights reserved.</p>
       </div>
     </footer>
   );

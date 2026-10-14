@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "motion/react";
+import { motion, type Variants } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/commerce/ProductCard";
 import {
@@ -65,12 +65,12 @@ const mockProducts = [
 ];
 
 export default function Home() {
-  const container = {
+  const container: Variants = {
     hidden: {},
     show: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
   };
   
-  const item = {
+  const item: Variants = {
     hidden: { opacity: 0, y: 24 },
     show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
   };
