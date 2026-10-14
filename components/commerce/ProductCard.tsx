@@ -1,78 +1,137 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, Plus } from "lucide-react";
+import { Heart, Plus, Check } from "lucide-react";
+import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useCartStore } from "@/lib/store/useCartStore";
+import { Product } from "@/lib/products";
 
 interface ProductCardProps {
-  id: string;
-  name: string;
-  slug: string;
-  description: string;
-  price: string;
-  weight: string;
-  image: string;
-  tags?: string[];
-  rating: number;
-  reviewCount: number;
+  product: Product;
 }
 
-export function ProductCard({
-  id,
-  name,
-  slug,
-  description,
-  price,
-  weight,
-  image,
-  tags,
-  rating,
-  reviewCount,
-}: ProductCardProps) {
+export function ProductCard({ product }: ProductCardProps) {
+  const [isWishlisted, setIsWishlisted] = useState(false);
+  const [added, setAdded] = useState(false);
+  const { addItem } = useCartStore();
+
+  const handleQuickAdd = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    addItem({
+      productId: product.id,
+      name: product.name,
+      slug: product.slug,
+      weight: product.baseWeight,
+      price: product.basePrice,
+      quantity: 1,
+      image: product.images[0],
+    });
+
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1500);
+  };
+
   return (
-    <div className="group relative flex flex-col overflow-hidden rounded-2xl bg-card shadow-sm transition-shadow hover:shadow-md">
+    <div className="group relative flex flex-col overflow-hidden rounded-3xl bg-white border border-sand shadow-xs transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
       {/* Badges */}
-      <div className="absolute top-3 left-3 z-10 flex flex-col gap-1">
-        {tags?.map((tag) => (
-          <Badge key={tag} variant={tag === "Spicy" ? "destructive" : "default"} className={tag !== "Spicy" ? "bg-leaf text-white" : ""}>
-            {tag}
+      <div className="absolute top-3 left-3 z-10 flex flex-col gap-1.5">
+        {product.isBestseller && (
+          <Badge className="bg-chip text-ink font-bold border-none shadow-xs text-xs">
+            Bestseller
           </Badge>
-        ))}
+        )}
+        {product.spiceLevel === "Hot" && (
+          <Badge className="bg-chilli text-white font-bold border-none text-xs">
+            Spicy 🔥
+          </Badge>
+        )}
+        {product.category === "gifting" && (
+          <Badge className="bg-turmeric text-ink font-bold border-none text-xs">
+            Gift Box ✨
+          </Badge>
+        )}
       </div>
-      {/* Wishlist */}
-      <button className="absolute top-3 right-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/80 text-ink shadow-sm backdrop-blur transition-transform hover:scale-110">
-        <Heart className="h-4 w-4" />
+
+      {/* Wishlist Button */}
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setIsWishlisted(!isWishlisted);
+        }}
+        className="absolute top-3 right-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-cream/90 text-ink shadow-xs backdrop-blur-md transition-transform hover:scale-110 active:scale-90"
+        aria-label="Add to wishlist"
+      >
+        <Heart
+          className={`h-4 w-4 transition-colors ${
+            isWishlisted ? "fill-chilli text-chilli" : "text-ink-soft hover:text-ink"
+          }`}
+        />
       </button>
 
-      {/* Image */}
-      <Link href={`/product/${slug}`} className="relative aspect-[4/5] w-full overflow-hidden bg-cream">
-        <Image src={image} alt={name} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
+      {/* Image Container */}
+      <Link href={`/product/${product.slug}`} className="relative aspect-4/5 w-full overflow-hidden bg-cream">
+        <Image
+          src={product.images[0]}
+          alt={product.name}
+          fill
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-108"
+        />
+        <div className="absolute inset-0 bg-radial-gradient(ellipse_at_bottom,rgba(0,0,0,0.1)_0%,transparent_60%) opacity-0 group-hover:opacity-100 transition-opacity" />
       </Link>
 
-      {/* Content */}
-      <div className="flex flex-1 flex-col p-4">
-        <div className="flex items-start justify-between gap-2">
-          <div>
-            <Link href={`/product/${slug}`}>
-              <h3 className="font-display text-lg font-bold text-ink hover:text-turmeric">{name}</h3>
-            </Link>
-            <p className="mt-1 text-xs text-ink-soft line-clamp-1">{description}</p>
-          </div>
-        </div>
-        
-        <div className="mt-2 flex items-center gap-1 text-xs text-ink-soft">
-          <span className="text-turmeric">★</span>
-          <span className="font-medium text-ink">{rating}</span>
-          <span>({reviewCount})</span>
+      {/* Product Details */}
+      <div className="flex flex-1 flex-col p-5">
+        <div className="flex items-center gap-1.5 text-xs text-ink-soft mb-1.5">
+          <span className="text-turmeric text-sm">★</span>
+          <span className="font-bold text-ink">{product.rating}</span>
+          <span className="text-ink-soft/70">({product.reviewCount})</span>
+          <span className="mx-1 text-sand">•</span>
+          <span className="text-[11px] font-semibold text-leaf uppercase tracking-wider">
+            {product.categoryName}
+          </span>
         </div>
 
-        <div className="mt-4 flex items-end justify-between">
+        <Link href={`/product/${product.slug}`} className="mb-1">
+          <h3 className="font-display text-lg font-bold text-ink group-hover:text-turmeric transition-colors line-clamp-1">
+            {product.name}
+          </h3>
+        </Link>
+        <p className="text-xs text-ink-soft line-clamp-2 leading-relaxed mb-4">
+          {product.tagline}
+        </p>
+
+        {/* Pricing and Quick Add */}
+        <div className="mt-auto pt-3 border-t border-sand/60 flex items-center justify-between">
           <div>
-            <p className="text-sm font-bold text-ink">From ₹{price}</p>
-            <p className="text-[10px] text-ink-soft uppercase tracking-wider">{weight}</p>
+            <span className="text-xs text-ink-soft block -mb-0.5">From</span>
+            <span className="text-lg font-bold text-ink">₹{product.basePrice}</span>
+            <span className="text-[11px] text-ink-soft ml-1 font-medium">/ {product.baseWeight}</span>
           </div>
-          <Button size="icon" className="h-10 w-10 shrink-0 rounded-full bg-chip text-ink hover:bg-turmeric md:translate-y-4 md:opacity-0 md:transition-all md:group-hover:translate-y-0 md:group-hover:opacity-100">
-            <Plus className="h-5 w-5" />
+
+          <Button
+            size="sm"
+            onClick={handleQuickAdd}
+            className={`rounded-full font-bold px-4 h-9 shadow-sm transition-all duration-200 active:scale-95 ${
+              added
+                ? "bg-leaf text-white hover:bg-leaf"
+                : "bg-chip text-ink hover:bg-turmeric"
+            }`}
+          >
+            {added ? (
+              <span className="flex items-center gap-1">
+                <Check className="w-3.5 h-3.5" /> Added
+              </span>
+            ) : (
+              <span className="flex items-center gap-1">
+                <Plus className="w-3.5 h-3.5" /> Quick Add
+              </span>
+            )}
           </Button>
         </div>
       </div>

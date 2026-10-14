@@ -5,6 +5,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
 import { FloatingWhatsApp } from "@/components/layout/FloatingWhatsApp";
+import { CartDrawer } from "@/components/commerce/CartDrawer";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -36,6 +37,7 @@ export default function RootLayout({
           <Footer />
           <MobileBottomNav />
           <FloatingWhatsApp />
+          <CartDrawer />
         </TooltipProvider>
       </body>
     </html>
