@@ -1,156 +1,299 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, type Variants } from "motion/react";
+import { Coffee, MapPin, Sparkles, Clock, Heart, ArrowRight } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 const menuData = {
   snacks: [
-    { name: "Kerala Mixture Bowl", price: "₹89", desc: "Spicy and crunchy, served fresh.", veg: true },
-    { name: "Banana Chip Platter", price: "₹129", desc: "Assorted banana chips with dips.", veg: true },
-    { name: "Spicy Tapioca Roast", price: "₹110", desc: "Tossed in fiery Kerala spices.", veg: true },
+    {
+      name: "Kadai Hot Banana Chip Platter",
+      price: "₹129",
+      desc: "Served straight from the hot kadai with coconut mint chutney and spicy onion relish.",
+      veg: true,
+      spicy: "Mild",
+      isSpecial: true,
+      img: "https://placehold.co/400x300/FFF9EC/2B1B10?text=Hot+Banana+Chips",
+    },
+    {
+      name: "Kerala Special Royal Mixture Bowl",
+      price: "₹89",
+      desc: "Crispy sev, roasted groundnuts, curry leaves, and whole fried garlic cloves.",
+      veg: true,
+      spicy: "Medium",
+      isSpecial: false,
+      img: "https://placehold.co/400x300/FFF9EC/2B1B10?text=Mixture+Bowl",
+    },
+    {
+      name: "Fiery Tapioca Sticks with Kanthari Dip",
+      price: "₹119",
+      desc: "Cassava batons double-crisped in coconut oil, served with bird's eye chili mayonnaise.",
+      veg: true,
+      spicy: "Hot",
+      isSpecial: true,
+      img: "https://placehold.co/400x300/FFF9EC/2B1B10?text=Tapioca+Roast",
+    },
+    {
+      name: "Sharkara Upperi (Sweet Jaggery Nibbles)",
+      price: "₹110",
+      desc: "Chunky fried banana coated in Marayoor jaggery, ginger powder, and crushed cardamom.",
+      veg: true,
+      spicy: "Sweet",
+      isSpecial: false,
+      img: "https://placehold.co/400x300/FFF9EC/2B1B10?text=Sharkara+Upperi",
+    },
   ],
   beverages: [
-    { name: "Filter Kaapi", price: "₹59", desc: "Authentic South Indian filter coffee.", veg: true },
-    { name: "Cardamom Chai", price: "₹49", desc: "Strong tea brewed with fresh cardamom.", veg: true },
-    { name: "Tender Coconut Cooler", price: "₹119", desc: "Fresh coconut water with mint.", veg: true },
+    {
+      name: "Degree South Indian Filter Kaapi",
+      price: "₹59",
+      desc: "Freshly ground Chikmagalur peaberry blend brewed in brass filters with frothy milk.",
+      veg: true,
+      spicy: "Hot Drink",
+      isSpecial: true,
+      img: "https://placehold.co/400x300/FFF9EC/2B1B10?text=Filter+Kaapi",
+    },
+    {
+      name: "Cardamom Highway Chai",
+      price: "₹49",
+      desc: "Strong Nilgiri tea infused with whole crushed green cardamom pods and ginger.",
+      veg: true,
+      spicy: "Hot Drink",
+      isSpecial: false,
+      img: "https://placehold.co/400x300/FFF9EC/2B1B10?text=Cardamom+Chai",
+    },
+    {
+      name: "Tender Coconut & Mint Cooler",
+      price: "₹119",
+      desc: "Fresh Malabar tender coconut water blended with garden mint and a hint of lime.",
+      veg: true,
+      spicy: "Chilled",
+      isSpecial: true,
+      img: "https://placehold.co/400x300/FFF9EC/2B1B10?text=Coconut+Cooler",
+    },
+    {
+      name: "Spiced Buttermilk (Sambharam)",
+      price: "₹49",
+      desc: "Chilled cultured buttermilk churned with ginger, green chilies, shallots, and curry leaves.",
+      veg: true,
+      spicy: "Refreshing",
+      isSpecial: false,
+      img: "https://placehold.co/400x300/FFF9EC/2B1B10?text=Sambharam",
+    },
   ],
   sandwiches: [
-    { name: "Paneer Tikka Toast", price: "₹149", desc: "Spicy paneer loaded in grilled bread.", veg: true },
-    { name: "Cheese & Corn Grill", price: "₹129", desc: "Melted cheese and sweet corn.", veg: true },
+    {
+      name: "Malabar Paneer Tikka Toast",
+      price: "₹149",
+      desc: "Marinated cottage cheese tossed in roasted spices and grilled in buttered sourdough.",
+      veg: true,
+      spicy: "Medium",
+      isSpecial: true,
+      img: "https://placehold.co/400x300/FFF9EC/2B1B10?text=Paneer+Toast",
+    },
+    {
+      name: "Golden Sweet Corn & Melting Cheese Grill",
+      price: "₹129",
+      desc: "Sweet corn, bell peppers, and gooey mozzarella sprinkled with oregano seasoning.",
+      veg: true,
+      spicy: "Mild",
+      isSpecial: false,
+      img: "https://placehold.co/400x300/FFF9EC/2B1B10?text=Cheese+Corn+Grill",
+    },
+  ],
+  combos: [
+    {
+      name: "Afternoon Kaapi & Crunch Combo",
+      price: "₹149",
+      desc: "1 Frothy Degree Filter Kaapi + Fresh Hot Banana Chips Platter + Coconut Dip.",
+      veg: true,
+      spicy: "Bestseller",
+      isSpecial: true,
+      img: "https://placehold.co/400x300/FFF9EC/2B1B10?text=Kaapi+Crunch+Combo",
+    },
+    {
+      name: "The Grand High-Tea Tasting Board",
+      price: "₹249",
+      desc: "Assortment of Banana, Jackfruit, Tapioca chips, Mixture bowl, and 2 Filter Coffees.",
+      veg: true,
+      spicy: "Feast",
+      isSpecial: true,
+      img: "https://placehold.co/400x300/FFF9EC/2B1B10?text=Tasting+Board",
+    },
   ],
 };
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.1 } },
+  show: { opacity: 1, transition: { staggerChildren: 0.08 } },
 };
 
 const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+  hidden: { opacity: 0, y: 15 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } },
 };
 
 export default function Cafe() {
   return (
-    <div className="flex flex-col overflow-hidden bg-cream">
+    <div className="flex flex-col overflow-hidden bg-cream min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-[60vh] min-h-[500px] w-full flex items-center justify-center overflow-hidden">
-        <motion.div 
-          initial={{ scale: 1.1 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
-          className="absolute inset-0 z-0"
-        >
-          <Image 
-            src="https://placehold.co/1920x1080/2B1B10/FFF9EC?text=Cafe+Interior" 
-            alt="Cafe Interior" 
-            fill 
-            className="object-cover opacity-80"
+      <section className="relative h-[65vh] min-h-[500px] w-full flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="https://placehold.co/1920x1080/2B1B10/FFF9EC?text=The+Yellow+Cafe+Ambiance"
+            alt="Cafe Interior"
+            fill
+            priority
+            className="object-cover opacity-75"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-cream via-cream/80 to-transparent" />
-        </motion.div>
-        
+          <div className="absolute inset-0 bg-gradient-to-t from-cream via-cream/70 to-transparent" />
+        </div>
+
         <div className="relative z-10 text-center px-4 max-w-3xl">
           <motion.div initial="hidden" animate="show" variants={containerVariants}>
-            <motion.h1 variants={itemVariants} className="font-display text-5xl md:text-7xl font-bold text-ink mb-6">
+            <motion.div
+              variants={itemVariants}
+              className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold text-ink mb-4 shadow-sm"
+            >
+              <Coffee className="w-3.5 h-3.5 text-turmeric" />
+              <span>Aroma of Kerala · Fresh Brews & Hot Kadai Snacks</span>
+            </motion.div>
+
+            <motion.h1
+              variants={itemVariants}
+              className="font-display text-5xl md:text-7xl font-bold text-ink mb-6"
+            >
               The Yellow Cafe
             </motion.h1>
-            <motion.p variants={itemVariants} className="text-xl text-ink-soft mb-8">
-              Experience the authentic taste of Kerala right at your table. Fresh brews, crispy snacks, and warm smiles.
+
+            <motion.p variants={itemVariants} className="text-lg md:text-xl text-ink-soft mb-8 max-w-xl mx-auto">
+              Where hot coconut oil chips meet frothy brass-filter kaapi. Relax, crunch, and catch up with friends.
             </motion.p>
+
+            <motion.div variants={itemVariants} className="flex justify-center gap-3">
+              <Button asChild className="bg-chip text-ink hover:bg-turmeric rounded-full font-bold h-12 px-8 text-xs">
+                <Link href="#menu">View Full Menu</Link>
+              </Button>
+              <Button asChild variant="outline" className="border-ink text-ink rounded-full font-bold h-12 px-8 text-xs bg-white/60">
+                <Link href="/stores">Find Nearest Cafe</Link>
+              </Button>
+            </motion.div>
           </motion.div>
         </div>
       </section>
 
       {/* Menu Section */}
-      <section className="container mx-auto px-4 md:px-6 py-16 md:py-24">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <h2 className="font-display text-4xl font-bold text-ink mb-4">Our Menu</h2>
-          <p className="text-ink-soft max-w-xl mx-auto">Made fresh every day with the finest ingredients and lots of love.</p>
-        </motion.div>
+      <section id="menu" className="container mx-auto px-4 md:px-6 py-16 md:py-20 max-w-6xl">
+        <div className="text-center mb-12">
+          <span className="text-xs font-bold uppercase tracking-widest text-turmeric bg-sand px-3 py-1 rounded-full">
+            Freshly Prepared
+          </span>
+          <h2 className="font-display text-4xl font-bold text-ink mt-2 mb-2">Our Cafe Menu</h2>
+          <p className="text-ink-soft max-w-lg mx-auto text-sm">
+            Everything is crafted to order with clean ingredients and traditional South Indian spices.
+          </p>
+        </div>
 
-        <Tabs defaultValue="snacks" className="max-w-4xl mx-auto">
-          <div className="flex justify-center mb-8">
-            <TabsList className="bg-sand p-1 rounded-full border border-cream h-auto">
-              <TabsTrigger value="snacks" className="rounded-full px-6 py-3 data-[state=active]:bg-chip data-[state=active]:text-ink text-ink-soft font-bold text-base transition-all">Snacks</TabsTrigger>
-              <TabsTrigger value="beverages" className="rounded-full px-6 py-3 data-[state=active]:bg-chip data-[state=active]:text-ink text-ink-soft font-bold text-base transition-all">Beverages</TabsTrigger>
-              <TabsTrigger value="sandwiches" className="rounded-full px-6 py-3 data-[state=active]:bg-chip data-[state=active]:text-ink text-ink-soft font-bold text-base transition-all">Sandwiches</TabsTrigger>
+        <Tabs defaultValue="snacks" className="w-full">
+          <div className="flex justify-center mb-10 overflow-x-auto pb-2">
+            <TabsList className="bg-white p-1.5 rounded-full border border-sand h-auto shadow-xs flex">
+              <TabsTrigger
+                value="snacks"
+                className="rounded-full px-6 py-2.5 data-[state=active]:bg-chip data-[state=active]:text-ink text-ink-soft font-bold text-xs transition-all"
+              >
+                Snacks
+              </TabsTrigger>
+              <TabsTrigger
+                value="beverages"
+                className="rounded-full px-6 py-2.5 data-[state=active]:bg-chip data-[state=active]:text-ink text-ink-soft font-bold text-xs transition-all"
+              >
+                Hot & Cold Drinks
+              </TabsTrigger>
+              <TabsTrigger
+                value="sandwiches"
+                className="rounded-full px-6 py-2.5 data-[state=active]:bg-chip data-[state=active]:text-ink text-ink-soft font-bold text-xs transition-all"
+              >
+                Toasted Sandwiches
+              </TabsTrigger>
+              <TabsTrigger
+                value="combos"
+                className="rounded-full px-6 py-2.5 data-[state=active]:bg-chip data-[state=active]:text-ink text-ink-soft font-bold text-xs transition-all"
+              >
+                Combos & Boards
+              </TabsTrigger>
             </TabsList>
           </div>
-          
+
           {Object.entries(menuData).map(([category, items]) => (
-            <TabsContent key={category} value={category} className="mt-8 outline-none">
-              <motion.div 
-                initial="hidden" 
-                animate="show" 
-                variants={containerVariants}
-                className="grid md:grid-cols-2 gap-6"
-              >
+            <TabsContent key={category} value={category} className="outline-none">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {items.map((item, i) => (
-                  <motion.div key={i} variants={itemVariants}>
-                    <Card className="bg-white hover:shadow-lg transition-all duration-300 border-none group cursor-pointer hover:-translate-y-1">
-                      <CardContent className="p-6">
-                        <div className="flex justify-between items-start mb-2">
-                          <h3 className="font-display text-2xl font-bold text-ink group-hover:text-turmeric transition-colors">{item.name}</h3>
-                          <span className="font-bold text-ink bg-cream px-3 py-1 rounded-full text-sm border border-sand shadow-sm">{item.price}</span>
-                        </div>
-                        <p className="text-ink-soft text-sm mb-4">{item.desc}</p>
-                        {item.veg && (
-                          <Badge variant="outline" className="text-leaf border-leaf/30 bg-leaf/10">Pure Veg</Badge>
-                        )}
-                      </CardContent>
-                    </Card>
-                  </motion.div>
+                  <div
+                    key={i}
+                    className="bg-white rounded-3xl p-5 border border-sand shadow-xs hover:shadow-md transition-all flex gap-4 items-center group"
+                  >
+                    <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden bg-sand shrink-0 border border-sand">
+                      <Image src={item.img} alt={item.name} fill className="object-cover group-hover:scale-105 transition-transform" />
+                      {item.isSpecial && (
+                        <span className="absolute top-1.5 left-1.5 bg-chip text-ink text-[9px] font-bold px-1.5 py-0.5 rounded-md">
+                          Special
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                      <div className="flex justify-between items-start gap-2 mb-1">
+                        <h3 className="font-display font-bold text-base text-ink group-hover:text-turmeric transition-colors line-clamp-1">
+                          {item.name}
+                        </h3>
+                        <span className="font-bold text-ink text-base shrink-0 bg-sand px-2.5 py-0.5 rounded-full text-xs">
+                          {item.price}
+                        </span>
+                      </div>
+                      <p className="text-xs text-ink-soft leading-relaxed line-clamp-2 mb-3">
+                        {item.desc}
+                      </p>
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-bold text-leaf bg-leaf/10 px-2 py-0.5 rounded-full">
+                          100% Veg
+                        </span>
+                        <span className="text-[10px] font-semibold text-ink-soft">
+                          {item.spicy}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 ))}
-              </motion.div>
+              </div>
             </TabsContent>
           ))}
         </Tabs>
       </section>
 
-      {/* Info Banner */}
-      <section className="bg-ink text-cream py-16 px-4 md:px-6">
-        <div className="container mx-auto grid md:grid-cols-2 gap-12 items-center">
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="font-display text-4xl font-bold mb-6 text-chip">Visit Us</h2>
-            <p className="text-cream/80 text-lg mb-8 leading-relaxed">
-              We are open every day from 10 AM to 10 PM. Drop by for a quick crunch or stay a while and enjoy the ambience.
+      {/* Cafe Ambiance Experience Strip */}
+      <section className="container mx-auto px-4 md:px-6 pb-20 max-w-6xl">
+        <div className="bg-sand/60 rounded-3xl p-8 md:p-12 border border-sand flex flex-col md:flex-row items-center justify-between gap-8">
+          <div>
+            <span className="text-xs font-bold uppercase tracking-widest text-turmeric bg-white px-3 py-1 rounded-full">
+              Hospitality & Timings
+            </span>
+            <h3 className="font-display text-2xl md:text-3xl font-bold text-ink mt-3 mb-2">
+              Open Daily: 9:00 AM – 10:30 PM
+            </h3>
+            <p className="text-xs md:text-sm text-ink-soft max-w-lg leading-relaxed">
+              Available at our Calicut Beach Promenade, Indiranagar Bengaluru, Marine Drive Kochi, and Anna Nagar Chennai outlets. Walk-in friendly with free high-speed Wi-Fi.
             </p>
-            <div className="space-y-4">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-cream/10 flex items-center justify-center shrink-0">
-                  <span className="text-2xl">📍</span>
-                </div>
-                <div>
-                  <h4 className="font-bold">Kochi Flagship Store</h4>
-                  <p className="text-sm text-cream/60">MG Road, Ernakulam, Kerala</p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl"
-          >
-            <Image src="https://placehold.co/800x600/2B1B10/FFF9EC?text=Map+Location" alt="Location" fill className="object-cover" />
-          </motion.div>
+          </div>
+
+          <Button asChild className="bg-ink text-cream hover:bg-ink-soft rounded-full font-bold h-12 px-8 text-xs shrink-0">
+            <Link href="/stores">View Cafe Locations & Directions</Link>
+          </Button>
         </div>
       </section>
     </div>

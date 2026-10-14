@@ -3,6 +3,20 @@
 import { useState } from "react";
 import Image from "next/image";
 import { motion, type Variants } from "motion/react";
+import {
+  Store,
+  DollarSign,
+  TrendingUp,
+  Clock,
+  CheckCircle2,
+  Download,
+  Building,
+  Users,
+  ShieldCheck,
+  ChevronRight,
+  ArrowRight,
+  Check,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
@@ -17,206 +31,617 @@ import { Label } from "@/components/ui/label";
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.15 } },
+  show: { opacity: 1, transition: { staggerChildren: 0.12 } },
 };
 
 const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
 };
 
+const FRANCHISE_MODELS = [
+  {
+    id: "kiosk",
+    title: "Express Kiosk",
+    tag: "High Footfall Hubs",
+    area: "80 – 150 sq.ft",
+    investment: "₹5L – ₹8L",
+    avgTicket: 120,
+    staff: "1 – 2 Staff",
+    payback: "7 – 10 Months",
+    desc: "Compact modular setup ideal for metro concourses, IT tech parks, shopping mall food courts, and transit stations.",
+    features: [
+      "Low capital expenditure",
+      "Plug & play pre-fabricated kiosk counters",
+      "Packaged retail chips & signature mixtures",
+      "Fast breakeven within 3-4 months",
+    ],
+    img: "https://placehold.co/600x400/FFF9EC/2B1B10?text=Express+Kiosk+Model",
+  },
+  {
+    id: "smart",
+    title: "Smart High-Street Store",
+    tag: "Most Popular",
+    area: "200 – 400 sq.ft",
+    investment: "₹10L – ₹15L",
+    avgTicket: 190,
+    staff: "2 – 3 Staff",
+    payback: "9 – 13 Months",
+    desc: "Full retail snack display combined with a compact live frying kadai show-window for maximum sensory customer pull.",
+    features: [
+      "Live aromatic kadai frying counter",
+      "Complete 20+ packaged snack product range",
+      "Beverage station with Filter Kaapi takeaway",
+      "High repeat residential customer loyalty",
+    ],
+    img: "https://placehold.co/600x400/FFF9EC/2B1B10?text=Smart+Retail+Store",
+  },
+  {
+    id: "flagship",
+    title: "Flagship Cafe & Kadai",
+    tag: "Complete Experience",
+    area: "600 – 1,200 sq.ft",
+    investment: "₹20L – ₹28L",
+    avgTicket: 310,
+    staff: "4 – 6 Staff",
+    payback: "12 – 16 Months",
+    desc: "A destination cafe featuring seating, authentic hot snacks, South Indian specialty brews, live kadai, and festive gift counters.",
+    features: [
+      "30+ seat casual dining cafe lounge",
+      "Full menu: sandwiches, snacks, filter kaapi",
+      "Corporate & festive hamper display corner",
+      "Maximum brand prestige & revenue volume",
+    ],
+    img: "https://placehold.co/600x400/FFF9EC/2B1B10?text=Flagship+Cafe+Store",
+  },
+];
+
 export default function Franchise() {
-  const [footfall, setFootfall] = useState([500]);
-  const estimatedRevenue = footfall[0] * 120 * 30; // Mock calculation
+  const [selectedModel, setSelectedModel] = useState<"kiosk" | "smart" | "flagship">("smart");
+  const [footfall, setFootfall] = useState([450]);
+  const [step, setStep] = useState(1);
+  const [submitted, setSubmitted] = useState(false);
+
+  // Form state
+  const [form, setForm] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    city: "",
+    state: "",
+    hasProperty: "no",
+    propertyArea: "",
+    budget: "10-15L",
+  });
+
+  const activeModelData = FRANCHISE_MODELS.find((m) => m.id === selectedModel) || FRANCHISE_MODELS[1];
+
+  // Dynamic Financial Calculations
+  const dailyCustomers = footfall[0];
+  const monthlyRevenue = dailyCustomers * activeModelData.avgTicket * 30;
+  const estimatedGrossProfit = Math.round(monthlyRevenue * 0.4); // 40% gross margin
+  const estimatedRentAndStaff = selectedModel === "kiosk" ? 65000 : selectedModel === "smart" ? 120000 : 220000;
+  const projectedNetMonthlyProfit = Math.max(0, estimatedGrossProfit - estimatedRentAndStaff);
 
   const formatCurrency = (val: number) => {
-    return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val);
+    return new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+      maximumFractionDigits: 0,
+    }).format(val);
+  };
+
+  const handleNextStep = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (step < 3) {
+      setStep(step + 1);
+    } else {
+      setSubmitted(true);
+    }
   };
 
   return (
-    <div className="flex flex-col overflow-hidden bg-cream">
-      {/* Hero Section */}
-      <section className="relative pt-24 md:pt-32 pb-20 px-4 text-center overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-chip/20 rounded-full blur-[100px] -z-10" />
-        <motion.div 
-          initial="hidden" 
-          animate="show" 
+    <div className="flex flex-col overflow-hidden bg-cream min-h-screen">
+      {/* 1. Hero Section */}
+      <section className="relative pt-20 md:pt-28 pb-16 px-4 text-center overflow-hidden">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-chip/25 rounded-full blur-[120px] -z-10" />
+        <motion.div
+          initial="hidden"
+          animate="show"
           variants={containerVariants}
           className="container mx-auto max-w-4xl relative z-10"
         >
-          <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-sand shadow-sm mb-8">
-            <span className="w-2 h-2 rounded-full bg-leaf animate-pulse" />
-            <span className="text-sm font-bold text-ink">Now expanding in South India</span>
+          <motion.div
+            variants={itemVariants}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-sand shadow-xs mb-6"
+          >
+            <span className="w-2.5 h-2.5 rounded-full bg-leaf animate-pulse" />
+            <span className="text-xs font-bold text-ink">
+              Expanding in South India · Karnataka, Tamil Nadu & Kerala
+            </span>
           </motion.div>
-          
-          <motion.h1 variants={itemVariants} className="font-display text-5xl md:text-7xl font-bold text-ink mb-6 leading-tight">
+
+          <motion.h1
+            variants={itemVariants}
+            className="font-display text-4xl sm:text-6xl md:text-7xl font-bold text-ink mb-6 leading-[1.1]"
+          >
             Own a piece of Kerala's favourite snack story.
           </motion.h1>
-          <motion.p variants={itemVariants} className="text-xl md:text-2xl text-ink-soft mb-10 max-w-2xl mx-auto">
-            Join our network with low investment, proven business models, and end-to-end operational support.
+
+          <motion.p
+            variants={itemVariants}
+            className="text-lg md:text-2xl text-ink-soft mb-10 max-w-2xl mx-auto leading-relaxed"
+          >
+            Partner with a brand that combines generational snacking love with streamlined modern operations and exceptional margins.
           </motion.p>
+
           <motion.div variants={itemVariants} className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button size="lg" className="bg-chip text-ink hover:bg-turmeric rounded-full font-bold text-lg h-14 px-8 shadow-lg hover:shadow-xl transition-all">
-              Download Franchise Kit
+            <Button
+              size="lg"
+              onClick={() => {
+                const el = document.getElementById("apply-wizard");
+                el?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="bg-chip text-ink hover:bg-turmeric rounded-full font-bold text-base h-14 px-8 shadow-md hover:shadow-xl transition-all"
+            >
+              Start Your Franchise Application
             </Button>
-            <Button size="lg" variant="outline" className="rounded-full font-bold text-lg h-14 px-8 border-ink text-ink hover:bg-ink hover:text-cream bg-transparent">
-              Calculate ROI
+            <Button
+              size="lg"
+              variant="outline"
+              onClick={() => {
+                const el = document.getElementById("roi-calculator");
+                el?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="rounded-full font-bold text-base h-14 px-8 border-ink text-ink hover:bg-ink hover:text-cream bg-white/40 backdrop-blur-xs"
+            >
+              Calculate Store ROI
             </Button>
+          </motion.div>
+
+          {/* Metrics Counter Pill */}
+          <motion.div
+            variants={itemVariants}
+            className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 bg-white/80 p-6 rounded-3xl border border-sand shadow-xs"
+          >
+            <div>
+              <div className="font-display text-3xl font-bold text-turmeric">₹5 Lakhs</div>
+              <div className="text-xs font-semibold text-ink-soft uppercase mt-0.5">Low Capex Entry</div>
+            </div>
+            <div>
+              <div className="font-display text-3xl font-bold text-turmeric">35 - 45%</div>
+              <div className="text-xs font-semibold text-ink-soft uppercase mt-0.5">Gross Margin</div>
+            </div>
+            <div>
+              <div className="font-display text-3xl font-bold text-turmeric">25+ Outlets</div>
+              <div className="text-xs font-semibold text-ink-soft uppercase mt-0.5">Proven Network</div>
+            </div>
+            <div>
+              <div className="font-display text-3xl font-bold text-turmeric">30 - 45 Days</div>
+              <div className="text-xs font-semibold text-ink-soft uppercase mt-0.5">Speed to Launch</div>
+            </div>
           </motion.div>
         </motion.div>
       </section>
 
-      {/* Models Section */}
-      <section className="container mx-auto px-4 md:px-6 py-20">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          className="text-center mb-16"
-        >
-          <h2 className="font-display text-4xl font-bold text-ink mb-4">Choose Your Format</h2>
-          <p className="text-ink-soft">We have a model for every space and budget.</p>
-        </motion.div>
+      {/* 2. Formats Showcase */}
+      <section className="container mx-auto px-4 md:px-6 py-16">
+        <div className="text-center max-w-xl mx-auto mb-14">
+          <span className="text-xs font-bold uppercase tracking-widest text-turmeric bg-sand px-3 py-1 rounded-full">
+            Flexible Formats
+          </span>
+          <h2 className="font-display text-3xl md:text-5xl font-bold text-ink mt-2 mb-3">
+            Choose Your Store Format
+          </h2>
+          <p className="text-ink-soft text-sm md:text-base">
+            From sleek tech park kiosks to full-service flagship cafes, our modular architecture adapts to your space and budget.
+          </p>
+        </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {[
-            { title: "Kiosk", area: "100 - 150 sq.ft", investment: "₹5L - ₹8L", img: "https://placehold.co/600x400/FFF9EC/2B1B10?text=Kiosk+Model" },
-            { title: "Smart Store", area: "250 - 400 sq.ft", investment: "₹10L - ₹15L", img: "https://placehold.co/600x400/FFF9EC/2B1B10?text=Smart+Store" },
-            { title: "Flagship", area: "800+ sq.ft", investment: "₹25L+", img: "https://placehold.co/600x400/FFF9EC/2B1B10?text=Flagship+Store" }
-          ].map((model, i) => (
-            <motion.div 
-              key={i}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.15, duration: 0.6 }}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {FRANCHISE_MODELS.map((model) => (
+            <div
+              key={model.id}
+              className={`bg-white rounded-3xl overflow-hidden border-2 transition-all duration-300 flex flex-col justify-between ${
+                selectedModel === model.id
+                  ? "border-turmeric shadow-xl scale-102 ring-4 ring-turmeric/10"
+                  : "border-sand shadow-xs hover:border-sand/80 hover:shadow-md"
+              }`}
             >
-              <Card className="bg-white rounded-3xl overflow-hidden border-none shadow-md hover:shadow-xl transition-all duration-300 group hover:-translate-y-2">
+              <div>
                 <div className="relative aspect-video w-full overflow-hidden bg-sand">
-                  <Image src={model.img} alt={model.title} fill className="object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <Image src={model.img} alt={model.title} fill className="object-cover" />
+                  <span className="absolute top-4 left-4 bg-chip text-ink text-xs font-bold px-3 py-1 rounded-full shadow-xs">
+                    {model.tag}
+                  </span>
                 </div>
-                <CardContent className="p-8">
-                  <h3 className="font-display text-2xl font-bold text-ink mb-4 group-hover:text-turmeric transition-colors">{model.title}</h3>
-                  <div className="space-y-3 mb-6">
-                    <div className="flex justify-between items-center pb-3 border-b border-sand">
-                      <span className="text-ink-soft text-sm font-medium">Area Required</span>
+
+                <div className="p-6 md:p-8">
+                  <h3 className="font-display text-2xl font-bold text-ink mb-2">{model.title}</h3>
+                  <p className="text-xs text-ink-soft leading-relaxed mb-6">{model.desc}</p>
+
+                  <div className="space-y-3 pt-4 border-t border-sand/60 text-xs">
+                    <div className="flex justify-between items-center pb-2 border-b border-sand/40">
+                      <span className="text-ink-soft font-medium">Area Required</span>
                       <span className="font-bold text-ink">{model.area}</span>
                     </div>
-                    <div className="flex justify-between items-center pb-3">
-                      <span className="text-ink-soft text-sm font-medium">Investment</span>
+                    <div className="flex justify-between items-center pb-2 border-b border-sand/40">
+                      <span className="text-ink-soft font-medium">Investment Range</span>
                       <span className="font-bold text-ink">{model.investment}</span>
                     </div>
+                    <div className="flex justify-between items-center pb-2 border-b border-sand/40">
+                      <span className="text-ink-soft font-medium">Staff Required</span>
+                      <span className="font-bold text-ink">{model.staff}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-ink-soft font-medium">Expected Payback</span>
+                      <span className="font-bold text-leaf">{model.payback}</span>
+                    </div>
                   </div>
-                  <Button variant="outline" className="w-full border-ink/20 text-ink hover:bg-chip hover:text-ink hover:border-chip rounded-full transition-colors">
-                    View Details
-                  </Button>
-                </CardContent>
-              </Card>
-            </motion.div>
+
+                  <div className="mt-6 pt-4 border-t border-sand/60 space-y-1.5">
+                    {model.features.map((feat, idx) => (
+                      <div key={idx} className="flex items-center gap-2 text-xs text-ink-soft">
+                        <Check className="w-3.5 h-3.5 text-turmeric shrink-0" />
+                        <span>{feat}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-6 md:p-8 pt-0">
+                <Button
+                  onClick={() => setSelectedModel(model.id as any)}
+                  className={`w-full rounded-full font-bold h-12 text-xs transition-colors ${
+                    selectedModel === model.id
+                      ? "bg-ink text-cream hover:bg-ink-soft"
+                      : "bg-chip text-ink hover:bg-turmeric"
+                  }`}
+                >
+                  {selectedModel === model.id ? "Selected for Calculator ✓" : "Select Format"}
+                </Button>
+              </div>
+            </div>
           ))}
         </div>
       </section>
 
-      {/* Interactive ROI Calculator */}
-      <section className="bg-ink text-cream py-24 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-5 bg-[url('https://placehold.co/100x100/FFF9EC/2B1B10?text=Pattern')] bg-repeat" />
-        <div className="container mx-auto max-w-5xl relative z-10 grid md:grid-cols-2 gap-16 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-chip mb-6">Calculate Your Potential</h2>
-            <p className="text-cream/80 text-lg mb-8 leading-relaxed">
-              Use our interactive calculator to estimate your monthly revenue based on expected daily footfall.
+      {/* 3. Interactive ROI Calculator */}
+      <section id="roi-calculator" className="bg-ink text-cream py-20 px-4 md:px-6 relative overflow-hidden">
+        <div className="container mx-auto max-w-5xl relative z-10 grid md:grid-cols-12 gap-12 items-center">
+          {/* Controls */}
+          <div className="md:col-span-7 space-y-6">
+            <span className="text-xs font-bold uppercase tracking-widest text-chip bg-white/10 px-3.5 py-1 rounded-full">
+              Interactive Financial Projection
+            </span>
+            <h2 className="font-display text-3xl md:text-5xl font-bold leading-tight">
+              Calculate Your Revenue Potential
+            </h2>
+            <p className="text-cream/80 text-sm leading-relaxed">
+              Select your format and simulate daily footfall to estimate monthly revenue and payback.
             </p>
-            
-            <div className="mb-8 p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur">
+
+            {/* Model Selector Pills */}
+            <div className="grid grid-cols-3 gap-2 bg-white/5 p-1.5 rounded-2xl border border-white/10">
+              {FRANCHISE_MODELS.map((m) => (
+                <button
+                  key={m.id}
+                  onClick={() => setSelectedModel(m.id as any)}
+                  className={`py-2.5 px-2 rounded-xl text-xs font-bold transition-all text-center cursor-pointer ${
+                    selectedModel === m.id
+                      ? "bg-chip text-ink shadow-md"
+                      : "text-cream/70 hover:text-cream"
+                  }`}
+                >
+                  {m.title}
+                </button>
+              ))}
+            </div>
+
+            {/* Footfall Slider */}
+            <div className="p-6 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md">
               <div className="flex justify-between items-end mb-4">
-                <Label className="text-cream text-base">Expected Daily Footfall</Label>
-                <span className="text-2xl font-bold text-chip">{footfall[0]} people</span>
+                <div>
+                  <Label className="text-cream text-sm font-semibold">Expected Daily Footfall</Label>
+                  <p className="text-[11px] text-cream/60 mt-0.5">Walk-ins purchasing snacks</p>
+                </div>
+                <span className="font-display text-2xl font-bold text-chip">
+                  {dailyCustomers} Customers / day
+                </span>
               </div>
-              <Slider 
-                value={footfall} 
-                onValueChange={(val) => setFootfall(Array.isArray(val) ? [...val] : [val])} 
-                max={2000} 
-                step={50}
+              <Slider
+                value={footfall}
+                onValueChange={(val) => setFootfall(Array.isArray(val) ? [...val] : [val])}
+                min={100}
+                max={1500}
+                step={25}
                 className="py-4"
               />
+              <div className="flex justify-between text-[11px] text-cream/50 mt-1">
+                <span>100 (Quiet Location)</span>
+                <span>750 (High Street)</span>
+                <span>1500 (Metro/Mall Concourse)</span>
+              </div>
             </div>
-          </motion.div>
-          
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="bg-white rounded-[2rem] p-8 md:p-12 text-ink shadow-2xl relative"
-          >
-            <div className="absolute top-0 right-8 -translate-y-1/2 bg-turmeric text-ink text-xs font-bold px-4 py-1 rounded-full uppercase tracking-wider">
-              Estimate
+          </div>
+
+          {/* Calculator Output Card */}
+          <div className="md:col-span-5 bg-white text-ink rounded-3xl p-8 shadow-2xl relative">
+            <span className="absolute top-0 right-8 -translate-y-1/2 bg-turmeric text-ink text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+              {activeModelData.title}
+            </span>
+
+            <span className="text-xs uppercase font-bold text-ink-soft tracking-wider block mb-1">
+              Estimated Monthly Sales
+            </span>
+            <div className="font-display text-4xl md:text-5xl font-bold text-ink mb-6">
+              {formatCurrency(monthlyRevenue)}
             </div>
-            <h3 className="text-ink-soft font-medium mb-2 uppercase tracking-wide text-sm">Estimated Monthly Revenue</h3>
-            <div className="font-display text-5xl md:text-6xl font-bold text-ink mb-6">
-              {formatCurrency(estimatedRevenue)}
+
+            <div className="space-y-3 pt-4 border-t border-sand text-xs mb-8">
+              <div className="flex justify-between text-ink-soft">
+                <span>Average Bill Value</span>
+                <span className="font-bold text-ink">₹{activeModelData.avgTicket}</span>
+              </div>
+              <div className="flex justify-between text-ink-soft">
+                <span>Est. Gross Margin (~40%)</span>
+                <span className="font-bold text-leaf">{formatCurrency(estimatedGrossProfit)}</span>
+              </div>
+              <div className="flex justify-between text-ink-soft">
+                <span>Est. Rent, Utilities & Staffing</span>
+                <span className="font-bold text-ink">-{formatCurrency(estimatedRentAndStaff)}</span>
+              </div>
+              <div className="flex justify-between text-sm font-bold text-ink pt-3 border-t border-sand">
+                <span>Projected Monthly Net Profit</span>
+                <span className="text-leaf text-base">{formatCurrency(projectedNetMonthlyProfit)}</span>
+              </div>
             </div>
-            <p className="text-sm text-ink-soft/80 italic mb-8">
-              * Figures are indicative estimates and not a guarantee of returns. Actual revenue may vary based on location and model.
-            </p>
-            <Button className="w-full bg-ink text-cream hover:bg-ink/90 rounded-full h-14 font-bold text-lg">
-              Start Your Application
+
+            <Button
+              onClick={() => {
+                const el = document.getElementById("apply-wizard");
+                el?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="w-full bg-ink text-cream hover:bg-ink-soft rounded-full h-12 font-bold text-xs shadow-md"
+            >
+              Apply for {activeModelData.title}
             </Button>
-          </motion.div>
+            <p className="text-[10px] text-ink-soft/70 text-center mt-3 italic">
+              * Indicative calculations based on historical outlet averages.
+            </p>
+          </div>
         </div>
       </section>
 
-      {/* FAQ & Form Section */}
-      <section className="container mx-auto px-4 py-24 grid md:grid-cols-2 gap-16">
-        <div>
-          <h2 className="font-display text-4xl font-bold text-ink mb-8">Frequent Questions</h2>
-          <Accordion type="single" collapsible className="w-full">
-            <AccordionItem value="item-1" className="border-sand">
-              <AccordionTrigger className="text-left font-bold text-lg hover:text-turmeric py-6">Do I need prior F&B experience?</AccordionTrigger>
-              <AccordionContent className="text-ink-soft text-base leading-relaxed pb-6">
-                No prior experience is necessary. We provide comprehensive training for you and your staff, covering operations, hygiene, and customer service.
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-2" className="border-sand">
-              <AccordionTrigger className="text-left font-bold text-lg hover:text-turmeric py-6">How long does it take to setup?</AccordionTrigger>
-              <AccordionContent className="text-ink-soft text-base leading-relaxed pb-6">
-                From agreement signing to opening day, it typically takes 30-45 days depending on the store format and interior work required.
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-3" className="border-sand">
-              <AccordionTrigger className="text-left font-bold text-lg hover:text-turmeric py-6">Do you supply the products?</AccordionTrigger>
-              <AccordionContent className="text-ink-soft text-base leading-relaxed pb-6">
-                Yes, to maintain consistent quality across all outlets, all core snacks and ingredients are supplied from our central manufacturing unit in Kerala.
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        </div>
+      {/* 4. Multi-Step Franchise Application Wizard */}
+      <section id="apply-wizard" className="container mx-auto px-4 md:px-6 py-20">
+        <div className="max-w-3xl mx-auto bg-white rounded-3xl border border-sand p-8 md:p-12 shadow-sm">
+          {submitted ? (
+            <div className="text-center py-10 space-y-4">
+              <div className="w-16 h-16 bg-leaf/10 text-leaf rounded-full flex items-center justify-center mx-auto">
+                <CheckCircle2 className="w-10 h-10" />
+              </div>
+              <h3 className="font-display text-3xl font-bold text-ink">Application Received!</h3>
+              <p className="text-sm text-ink-soft max-w-md mx-auto">
+                Thank you, <strong>{form.name}</strong>. Our Franchise Development Director will call you at <strong>{form.phone}</strong> within 24 hours with the detailed kit.
+              </p>
+              <div className="pt-4">
+                <Button
+                  onClick={() => {
+                    setSubmitted(false);
+                    setStep(1);
+                  }}
+                  variant="outline"
+                  className="rounded-full border-sand font-bold text-xs"
+                >
+                  Start New Inquiry
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div>
+              {/* Step Progress Bar */}
+              <div className="mb-8">
+                <div className="flex justify-between items-center text-xs font-bold text-ink mb-2">
+                  <span className="uppercase tracking-wider text-turmeric">
+                    Step {step} of 3: {step === 1 ? "Personal Details" : step === 2 ? "Location & Space" : "Investment & Model"}
+                  </span>
+                  <span>{Math.round((step / 3) * 100)}% Complete</span>
+                </div>
+                <div className="w-full h-2 bg-sand rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-turmeric transition-all duration-300 rounded-full"
+                    style={{ width: `${(step / 3) * 100}%` }}
+                  />
+                </div>
+              </div>
 
-        <div className="bg-white p-8 md:p-10 rounded-3xl shadow-xl border border-sand">
-          <h2 className="font-display text-3xl font-bold text-ink mb-2">Request Info</h2>
-          <p className="text-ink-soft mb-8">Fill this out and our franchise team will call you.</p>
-          
-          <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-            <div className="space-y-2">
-              <Label htmlFor="name">Full Name</Label>
-              <Input id="name" placeholder="John Doe" className="bg-cream border-transparent h-12 rounded-xl focus-visible:ring-turmeric" />
+              <form onSubmit={handleNextStep} className="space-y-6">
+                {/* Step 1: Personal Details */}
+                {step === 1 && (
+                  <div className="space-y-4">
+                    <h3 className="font-display text-2xl font-bold text-ink mb-2">About You</h3>
+                    <div>
+                      <Label className="text-xs font-bold text-ink uppercase">Full Name *</Label>
+                      <Input
+                        required
+                        placeholder="e.g. Suresh Panicker"
+                        value={form.name}
+                        onChange={(e) => setForm({ ...form, name: e.target.value })}
+                        className="bg-cream border-sand rounded-xl h-12 text-sm text-ink"
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <Label className="text-xs font-bold text-ink uppercase">Phone Number (WhatsApp) *</Label>
+                        <Input
+                          required
+                          type="tel"
+                          placeholder="10-digit number"
+                          value={form.phone}
+                          onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                          className="bg-cream border-sand rounded-xl h-12 text-sm text-ink"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-xs font-bold text-ink uppercase">Email Address *</Label>
+                        <Input
+                          required
+                          type="email"
+                          placeholder="name@example.com"
+                          value={form.email}
+                          onChange={(e) => setForm({ ...form, email: e.target.value })}
+                          className="bg-cream border-sand rounded-xl h-12 text-sm text-ink"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Step 2: Location & Space */}
+                {step === 2 && (
+                  <div className="space-y-4">
+                    <h3 className="font-display text-2xl font-bold text-ink mb-2">Location & Space</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <Label className="text-xs font-bold text-ink uppercase">Preferred City *</Label>
+                        <Input
+                          required
+                          placeholder="e.g. Bengaluru, Kochi, Chennai"
+                          value={form.city}
+                          onChange={(e) => setForm({ ...form, city: e.target.value })}
+                          className="bg-cream border-sand rounded-xl h-12 text-sm text-ink"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-xs font-bold text-ink uppercase">State *</Label>
+                        <Input
+                          required
+                          placeholder="e.g. Karnataka, Kerala"
+                          value={form.state}
+                          onChange={(e) => setForm({ ...form, state: e.target.value })}
+                          className="bg-cream border-sand rounded-xl h-12 text-sm text-ink"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <Label className="text-xs font-bold text-ink uppercase">
+                        Do you currently own or rent a commercial space?
+                      </Label>
+                      <div className="grid grid-cols-3 gap-3 mt-1.5">
+                        {["Already Rented", "Own Property", "Looking for Site"].map((status) => (
+                          <button
+                            key={status}
+                            type="button"
+                            onClick={() => setForm({ ...form, hasProperty: status })}
+                            className={`p-3 rounded-xl border text-xs font-bold transition-all text-center cursor-pointer ${
+                              form.hasProperty === status
+                                ? "border-turmeric bg-chip/20 text-ink"
+                                : "border-sand bg-cream text-ink-soft hover:border-sand/80"
+                            }`}
+                          >
+                            {status}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Step 3: Investment Budget */}
+                {step === 3 && (
+                  <div className="space-y-4">
+                    <h3 className="font-display text-2xl font-bold text-ink mb-2">Investment Capital</h3>
+                    <div>
+                      <Label className="text-xs font-bold text-ink uppercase">Available Capital Budget</Label>
+                      <div className="grid grid-cols-3 gap-3 mt-1.5">
+                        {["₹5L – ₹10L", "₹10L – ₹20L", "₹20L – ₹35L+"].map((b) => (
+                          <button
+                            key={b}
+                            type="button"
+                            onClick={() => setForm({ ...form, budget: b })}
+                            className={`p-3 rounded-xl border text-xs font-bold transition-all text-center cursor-pointer ${
+                              form.budget === b
+                                ? "border-turmeric bg-chip/20 text-ink"
+                                : "border-sand bg-cream text-ink-soft hover:border-sand/80"
+                            }`}
+                          >
+                            {b}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="bg-cream p-4 rounded-xl border border-sand text-xs text-ink-soft">
+                      <p className="font-bold text-ink mb-1">What happens next?</p>
+                      <p>
+                        Our franchise director will review your preferred city and send you the comprehensive 18-page Yellow Chips Franchise Prospectus & P&L model.
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Button Controls */}
+                <div className="flex justify-between items-center pt-4 border-t border-sand">
+                  {step > 1 ? (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setStep(step - 1)}
+                      className="rounded-full border-sand font-bold text-xs px-5"
+                    >
+                      Back
+                    </Button>
+                  ) : (
+                    <div />
+                  )}
+
+                  <Button
+                    type="submit"
+                    className="bg-chip text-ink hover:bg-turmeric rounded-full font-bold h-12 px-8 text-xs shadow-sm"
+                  >
+                    {step === 3 ? "Submit Application" : "Continue to Next Step →"}
+                  </Button>
+                </div>
+              </form>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="phone">Phone Number</Label>
-              <Input id="phone" type="tel" placeholder="+91 90000 00000" className="bg-cream border-transparent h-12 rounded-xl focus-visible:ring-turmeric" />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="city">Preferred City</Label>
-              <Input id="city" placeholder="E.g. Bangalore" className="bg-cream border-transparent h-12 rounded-xl focus-visible:ring-turmeric" />
-            </div>
-            <Button type="button" className="w-full bg-chip text-ink hover:bg-turmeric rounded-xl font-bold text-lg h-14 mt-4 transition-transform active:scale-95">
-              Submit Request
-            </Button>
-          </form>
+          )}
         </div>
+      </section>
+
+      {/* 5. FAQ Accordion */}
+      <section className="container mx-auto px-4 md:px-6 py-16 max-w-4xl">
+        <h2 className="font-display text-3xl md:text-4xl font-bold text-ink text-center mb-10">
+          Frequently Answered Questions
+        </h2>
+        <Accordion className="w-full bg-white p-6 md:p-8 rounded-3xl border border-sand shadow-sm">
+          <AccordionItem value="item-1" className="border-sand">
+            <AccordionTrigger className="text-left font-bold text-base text-ink py-4 hover:text-turmeric">
+              Do I need prior food & beverage experience to run a franchise?
+            </AccordionTrigger>
+            <AccordionContent className="text-ink-soft text-sm leading-relaxed pb-4">
+              No prior culinary experience is necessary. We provide a rigorous 14-day training module for you and your staff covering food handling, live frying mandoline operation, inventory management, POS billing, and hospitality standards.
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="item-2" className="border-sand">
+            <AccordionTrigger className="text-left font-bold text-base text-ink py-4 hover:text-turmeric">
+              Where do the raw bananas, jackfruit, and oils come from?
+            </AccordionTrigger>
+            <AccordionContent className="text-ink-soft text-sm leading-relaxed pb-4">
+              To guarantee zero deviation in crispness and taste, 100% of raw seasoned chips, packaged mixtures, and authentic cold-pressed coconut oil are supplied directly from our centralized Kerala manufacturing hub.
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="item-3" className="border-sand">
+            <AccordionTrigger className="text-left font-bold text-base text-ink py-4 hover:text-turmeric">
+              What is the typical setup timeline from agreement signing?
+            </AccordionTrigger>
+            <AccordionContent className="text-ink-soft text-sm leading-relaxed pb-4">
+              For an Express Kiosk, launch takes approximately 20-30 days. For Smart Stores and Flagships, civil interiors and equipment setup typically take 35-45 days.
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
       </section>
     </div>
   );
