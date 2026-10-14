@@ -41,11 +41,11 @@ export default function Shop() {
     <div className="bg-cream min-h-screen py-10 px-4 md:px-6">
       <div className="container mx-auto">
         {/* Page Header */}
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <span className="text-xs font-bold uppercase tracking-widest text-turmeric bg-sand px-3 py-1 rounded-full">
+        <div className="text-center max-w-2xl mx-auto mb-10 pt-4">
+          <span className="text-xs font-bold uppercase tracking-widest text-turmeric glass-kerala-gold px-4 py-1.5 rounded-full inline-block shadow-xs border border-turmeric/30">
             Kerala's Finest Crunch
           </span>
-          <h1 className="font-display text-4xl md:text-5xl font-bold text-ink mt-3 mb-3">
+          <h1 className="font-display text-4xl md:text-5xl font-black text-ink mt-3 mb-3 tracking-tight">
             Shop Authentic Kerala Snacks
           </h1>
           <p className="text-ink-soft text-base">
@@ -54,7 +54,7 @@ export default function Shop() {
         </div>
 
         {/* Filters and Controls */}
-        <div className="bg-white p-4 md:p-6 rounded-3xl border border-sand shadow-xs mb-8 space-y-4">
+        <div className="glass-kerala-card p-5 md:p-6 rounded-3xl border border-turmeric/25 shadow-md mb-8 space-y-4">
           <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
             {/* Search Input */}
             <div className="relative w-full md:w-80">
@@ -64,7 +64,7 @@ export default function Shop() {
                 placeholder="Search banana, jackfruit, spicy..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 bg-cream/70 border-sand rounded-full h-11 text-sm font-medium focus-visible:ring-turmeric text-ink"
+                className="pl-10 bg-white/80 border-sand/80 rounded-full h-11 text-sm font-medium focus-visible:ring-turmeric text-ink shadow-xs"
               />
             </div>
 
@@ -76,7 +76,7 @@ export default function Shop() {
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as any)}
                 aria-label="Sort snacks by"
-                className="bg-cream/70 border border-sand rounded-full px-4 h-11 text-xs font-bold text-ink outline-none cursor-pointer focus:ring-2 focus:ring-turmeric"
+                className="bg-white/80 border border-sand/80 rounded-full px-4 h-11 text-xs font-bold text-ink outline-none cursor-pointer focus:ring-2 focus:ring-turmeric shadow-xs"
               >
                 <option value="featured">Featured / Bestsellers</option>
                 <option value="rating">Highest Rated</option>
@@ -87,15 +87,15 @@ export default function Shop() {
           </div>
 
           {/* Category Tabs */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar pt-2 border-t border-sand/60">
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar pt-3 border-t border-sand/60">
             {CATEGORIES.map((cat) => (
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
                 className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${
                   selectedCategory === cat.id
-                    ? "bg-ink text-cream shadow-sm"
-                    : "bg-cream text-ink-soft hover:bg-sand/70 hover:text-ink"
+                    ? "bg-ink text-cream shadow-sm scale-105"
+                    : "bg-white/70 text-ink-soft border border-sand hover:bg-sand/70 hover:text-ink"
                 }`}
               >
                 {cat.name}
@@ -113,7 +113,7 @@ export default function Shop() {
 
         {/* Products Grid */}
         {filteredProducts.length === 0 ? (
-          <div className="text-center py-20 bg-white rounded-3xl border border-sand">
+          <div className="text-center py-20 glass-kerala-card rounded-3xl border border-sand/80 shadow-xs">
             <p className="font-display text-2xl font-bold text-ink mb-2">No snacks found</p>
             <p className="text-sm text-ink-soft max-w-sm mx-auto mb-6">
               We couldn't find any snacks matching "{searchQuery}". Try searching for banana, tapioca, or mixture.
@@ -123,13 +123,13 @@ export default function Shop() {
                 setSearchQuery("");
                 setSelectedCategory("all");
               }}
-              className="bg-chip text-ink hover:bg-turmeric px-6 py-2.5 rounded-full font-bold text-sm"
+              className="bg-turmeric text-ink hover:bg-turmeric/90 px-6 py-2.5 rounded-full font-bold text-sm shadow-xs transition-transform hover:scale-105"
             >
               Reset Filters
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 animate-fade-in-up">
             {filteredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}

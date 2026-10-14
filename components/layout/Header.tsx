@@ -30,16 +30,16 @@ export function Header() {
         <span>Kerala Heritage Crunch · Fried in 100% Coconut Oil · Free Shipping Above ₹499</span>
       </div>
 
-      <header className="sticky top-0 z-40 w-full border-b border-sand bg-cream/95 backdrop-blur-md">
+      <header className="sticky top-0 z-40 w-full border-b border-turmeric/25 bg-cream/85 backdrop-blur-xl supports-backdrop-filter:bg-cream/75 transition-all shadow-xs">
         <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
           {/* Left: Brand Logo */}
           <div className="flex items-center gap-8">
-            <Link href="/" className="flex items-center gap-2 group">
-              <div className="w-10 h-10 rounded-2xl bg-chip flex items-center justify-center text-ink font-bold text-xl shadow-sm group-hover:rotate-6 transition-transform">
+            <Link href="/" className="flex items-center gap-2.5 group">
+              <div className="w-11 h-11 rounded-2xl bg-chip/90 border border-turmeric/40 flex items-center justify-center text-ink font-bold text-2xl shadow-sm group-hover:rotate-6 group-hover:scale-105 transition-all">
                 🍌
               </div>
               <div>
-                <span className="font-display text-2xl font-black tracking-tight text-ink">
+                <span className="font-display text-2xl font-black tracking-tight text-ink group-hover:text-turmeric transition-colors">
                   Yellow Chips
                 </span>
                 <span className="block text-[10px] uppercase font-bold tracking-widest text-turmeric -mt-1">
@@ -56,10 +56,10 @@ export function Header() {
                   <Link
                     key={link.name}
                     href={link.href}
-                    className={`px-3 py-2 rounded-full text-sm font-bold transition-all ${
+                    className={`px-3.5 py-2 rounded-full text-sm font-bold transition-all ${
                       isActive
-                        ? "bg-sand text-ink shadow-xs"
-                        : "text-ink-soft hover:text-ink hover:bg-sand/50"
+                        ? "bg-sand/80 text-ink shadow-xs border border-turmeric/30"
+                        : "text-ink-soft hover:text-ink hover:bg-sand/40"
                     }`}
                   >
                     {link.name}

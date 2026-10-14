@@ -159,28 +159,28 @@ export default function Cafe() {
           <motion.div initial="hidden" animate="show" variants={containerVariants}>
             <motion.div
               variants={itemVariants}
-              className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold text-ink mb-4 shadow-sm"
+              className="inline-flex items-center gap-2 glass-kerala-gold px-4 py-1.5 rounded-full text-xs font-bold text-ink mb-4 shadow-sm border border-turmeric/35"
             >
-              <Coffee className="w-3.5 h-3.5 text-turmeric" />
+              <Coffee className="w-3.5 h-3.5 text-turmeric animate-bounce" />
               <span>Aroma of Kerala · Fresh Brews & Hot Kadai Snacks</span>
             </motion.div>
 
             <motion.h1
               variants={itemVariants}
-              className="font-display text-5xl md:text-7xl font-bold text-ink mb-6"
+              className="font-display text-5xl md:text-7xl font-black text-ink mb-6 tracking-tight"
             >
               The Yellow Cafe
             </motion.h1>
 
-            <motion.p variants={itemVariants} className="text-lg md:text-xl text-ink-soft mb-8 max-w-xl mx-auto">
+            <motion.p variants={itemVariants} className="text-lg md:text-xl text-ink-soft mb-8 max-w-xl mx-auto font-normal">
               Where hot coconut oil chips meet frothy brass-filter kaapi. Relax, crunch, and catch up with friends.
             </motion.p>
 
             <motion.div variants={itemVariants} className="flex justify-center gap-3">
-              <Button asChild className="bg-chip text-ink hover:bg-turmeric rounded-full font-bold h-12 px-8 text-xs">
+              <Button asChild className="bg-turmeric text-ink hover:bg-turmeric/90 rounded-full font-bold h-12 px-8 text-xs shadow-md transition-all hover:scale-105">
                 <Link href="#menu">View Full Menu</Link>
               </Button>
-              <Button asChild variant="outline" className="border-ink text-ink rounded-full font-bold h-12 px-8 text-xs bg-white/60">
+              <Button asChild variant="outline" className="border-ink/80 text-ink rounded-full font-bold h-12 px-8 text-xs glass-kerala-card hover:bg-ink hover:text-cream transition-all hover:scale-105">
                 <Link href="/stores">Find Nearest Cafe</Link>
               </Button>
             </motion.div>
@@ -191,10 +191,10 @@ export default function Cafe() {
       {/* Menu Section */}
       <section id="menu" className="container mx-auto px-4 md:px-6 py-16 md:py-20 max-w-6xl">
         <div className="text-center mb-12">
-          <span className="text-xs font-bold uppercase tracking-widest text-turmeric bg-sand px-3 py-1 rounded-full">
+          <span className="text-xs font-bold uppercase tracking-widest text-turmeric glass-kerala-gold px-4 py-1.5 rounded-full inline-block shadow-xs border border-turmeric/30">
             Freshly Prepared
           </span>
-          <h2 className="font-display text-4xl font-bold text-ink mt-2 mb-2">Our Cafe Menu</h2>
+          <h2 className="font-display text-4xl font-bold text-ink mt-3 mb-2">Our Cafe Menu</h2>
           <p className="text-ink-soft max-w-lg mx-auto text-sm">
             Everything is crafted to order with clean ingredients and traditional South Indian spices.
           </p>
@@ -202,28 +202,28 @@ export default function Cafe() {
 
         <Tabs defaultValue="snacks" className="w-full">
           <div className="flex justify-center mb-10 overflow-x-auto pb-2">
-            <TabsList className="bg-white p-1.5 rounded-full border border-sand h-auto shadow-xs flex">
+            <TabsList className="glass-kerala-card p-1.5 rounded-full border border-turmeric/25 h-auto shadow-sm flex">
               <TabsTrigger
                 value="snacks"
-                className="rounded-full px-6 py-2.5 data-[state=active]:bg-chip data-[state=active]:text-ink text-ink-soft font-bold text-xs transition-all"
+                className="rounded-full px-6 py-2.5 data-[state=active]:bg-turmeric data-[state=active]:text-ink text-ink-soft font-bold text-xs transition-all cursor-pointer"
               >
                 Snacks
               </TabsTrigger>
               <TabsTrigger
                 value="beverages"
-                className="rounded-full px-6 py-2.5 data-[state=active]:bg-chip data-[state=active]:text-ink text-ink-soft font-bold text-xs transition-all"
+                className="rounded-full px-6 py-2.5 data-[state=active]:bg-turmeric data-[state=active]:text-ink text-ink-soft font-bold text-xs transition-all cursor-pointer"
               >
                 Hot & Cold Drinks
               </TabsTrigger>
               <TabsTrigger
                 value="sandwiches"
-                className="rounded-full px-6 py-2.5 data-[state=active]:bg-chip data-[state=active]:text-ink text-ink-soft font-bold text-xs transition-all"
+                className="rounded-full px-6 py-2.5 data-[state=active]:bg-turmeric data-[state=active]:text-ink text-ink-soft font-bold text-xs transition-all cursor-pointer"
               >
                 Toasted Sandwiches
               </TabsTrigger>
               <TabsTrigger
                 value="combos"
-                className="rounded-full px-6 py-2.5 data-[state=active]:bg-chip data-[state=active]:text-ink text-ink-soft font-bold text-xs transition-all"
+                className="rounded-full px-6 py-2.5 data-[state=active]:bg-turmeric data-[state=active]:text-ink text-ink-soft font-bold text-xs transition-all cursor-pointer"
               >
                 Combos & Boards
               </TabsTrigger>
@@ -236,12 +236,12 @@ export default function Cafe() {
                 {items.map((item, i) => (
                   <div
                     key={i}
-                    className="bg-white rounded-3xl p-5 border border-sand shadow-xs hover:shadow-md transition-all flex gap-4 items-center group"
+                    className="glass-kerala-card rounded-3xl p-5 border border-sand/80 shadow-xs hover:border-turmeric/40 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex gap-4 items-center group"
                   >
-                    <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden bg-sand shrink-0 border border-sand">
-                      <Image src={item.img} alt={item.name} fill className="object-cover group-hover:scale-105 transition-transform" />
+                    <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden bg-sand shrink-0 border border-sand/60">
+                      <Image src={item.img} alt={item.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
                       {item.isSpecial && (
-                        <span className="absolute top-1.5 left-1.5 bg-chip text-ink text-[9px] font-bold px-1.5 py-0.5 rounded-md">
+                        <span className="absolute top-1.5 left-1.5 bg-chip/95 text-ink text-[9px] font-bold px-1.5 py-0.5 rounded-md border border-turmeric/30 backdrop-blur-xs">
                           Special
                         </span>
                       )}
@@ -252,7 +252,7 @@ export default function Cafe() {
                         <h3 className="font-display font-bold text-base text-ink group-hover:text-turmeric transition-colors line-clamp-1">
                           {item.name}
                         </h3>
-                        <span className="font-bold text-ink text-base shrink-0 bg-sand px-2.5 py-0.5 rounded-full text-xs">
+                        <span className="font-bold text-ink text-base shrink-0 bg-sand/80 border border-sand px-2.5 py-0.5 rounded-full text-xs">
                           {item.price}
                         </span>
                       </div>
@@ -260,7 +260,7 @@ export default function Cafe() {
                         {item.desc}
                       </p>
                       <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-bold text-leaf bg-leaf/10 px-2 py-0.5 rounded-full">
+                        <span className="text-[10px] font-bold text-leaf bg-leaf/10 border border-leaf/20 px-2 py-0.5 rounded-full">
                           100% Veg
                         </span>
                         <span className="text-[10px] font-semibold text-ink-soft">
@@ -278,9 +278,9 @@ export default function Cafe() {
 
       {/* Cafe Ambiance Experience Strip */}
       <section className="container mx-auto px-4 md:px-6 pb-20 max-w-6xl">
-        <div className="bg-sand/60 rounded-3xl p-8 md:p-12 border border-sand flex flex-col md:flex-row items-center justify-between gap-8">
+        <div className="glass-kerala-gold rounded-3xl p-8 md:p-12 border border-turmeric/30 shadow-md flex flex-col md:flex-row items-center justify-between gap-8">
           <div>
-            <span className="text-xs font-bold uppercase tracking-widest text-turmeric bg-white px-3 py-1 rounded-full">
+            <span className="text-xs font-bold uppercase tracking-widest text-turmeric bg-white/90 border border-turmeric/20 px-3.5 py-1.5 rounded-full shadow-xs">
               Hospitality & Timings
             </span>
             <h3 className="font-display text-2xl md:text-3xl font-bold text-ink mt-3 mb-2">
@@ -291,7 +291,7 @@ export default function Cafe() {
             </p>
           </div>
 
-          <Button asChild className="bg-ink text-cream hover:bg-ink-soft rounded-full font-bold h-12 px-8 text-xs shrink-0">
+          <Button asChild className="bg-ink text-cream hover:bg-ink-soft rounded-full font-bold h-12 px-8 text-xs shrink-0 shadow-md transition-transform hover:scale-105">
             <Link href="/stores">View Cafe Locations & Directions</Link>
           </Button>
         </div>

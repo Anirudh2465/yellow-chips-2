@@ -143,8 +143,8 @@ export default function Franchise() {
   return (
     <div className="flex flex-col overflow-hidden bg-cream min-h-screen">
       {/* 1. Hero Section */}
-      <section className="relative pt-20 md:pt-28 pb-16 px-4 text-center overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-chip/25 rounded-full blur-[120px] -z-10" />
+      <section className="relative pt-20 md:pt-28 pb-16 px-4 text-center overflow-hidden bg-kadai-mesh">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-turmeric/15 rounded-full blur-[140px] -z-10 animate-pulse-glow" />
         <motion.div
           initial="hidden"
           animate="show"
@@ -153,24 +153,24 @@ export default function Franchise() {
         >
           <motion.div
             variants={itemVariants}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-sand shadow-xs mb-6"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-kerala-gold border border-turmeric/40 shadow-xs mb-6"
           >
-            <span className="w-2.5 h-2.5 rounded-full bg-leaf animate-pulse" />
+            <span className="w-2.5 h-2.5 rounded-full bg-leaf animate-ripple-pulse" />
             <span className="text-xs font-bold text-ink">
-              Expanding in South India · Karnataka, Tamil Nadu & Kerala
+              Expanding Across South India · Karnataka, Tamil Nadu & Kerala
             </span>
           </motion.div>
 
           <motion.h1
             variants={itemVariants}
-            className="font-display text-4xl sm:text-6xl md:text-7xl font-bold text-ink mb-6 leading-[1.1]"
+            className="font-display text-4xl sm:text-6xl md:text-7xl font-black text-ink mb-6 leading-[1.1] tracking-tight"
           >
             Own a piece of Kerala's favourite snack story.
           </motion.h1>
 
           <motion.p
             variants={itemVariants}
-            className="text-lg md:text-2xl text-ink-soft mb-10 max-w-2xl mx-auto leading-relaxed"
+            className="text-lg md:text-2xl text-ink-soft mb-10 max-w-2xl mx-auto leading-relaxed font-normal"
           >
             Partner with a brand that combines generational snacking love with streamlined modern operations and exceptional margins.
           </motion.p>
@@ -182,7 +182,7 @@ export default function Franchise() {
                 const el = document.getElementById("apply-wizard");
                 el?.scrollIntoView({ behavior: "smooth" });
               }}
-              className="bg-chip text-ink hover:bg-turmeric rounded-full font-bold text-base h-14 px-8 shadow-md hover:shadow-xl transition-all"
+              className="bg-turmeric text-ink hover:bg-turmeric/90 rounded-full font-bold text-base h-14 px-8 shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300"
             >
               Start Your Franchise Application
             </Button>
@@ -193,32 +193,32 @@ export default function Franchise() {
                 const el = document.getElementById("roi-calculator");
                 el?.scrollIntoView({ behavior: "smooth" });
               }}
-              className="rounded-full font-bold text-base h-14 px-8 border-ink text-ink hover:bg-ink hover:text-cream bg-white/40 backdrop-blur-xs"
+              className="rounded-full font-bold text-base h-14 px-8 border-ink/80 text-ink hover:bg-ink hover:text-cream glass-kerala-card transition-all duration-300 hover:scale-105"
             >
               Calculate Store ROI
             </Button>
           </motion.div>
 
-          {/* Metrics Counter Pill */}
+          {/* Metrics Counter Glass Card */}
           <motion.div
             variants={itemVariants}
-            className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 bg-white/80 p-6 rounded-3xl border border-sand shadow-xs"
+            className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 glass-kerala-card p-6 rounded-3xl border border-turmeric/25 shadow-md"
           >
-            <div>
-              <div className="font-display text-3xl font-bold text-turmeric">₹5 Lakhs</div>
-              <div className="text-xs font-semibold text-ink-soft uppercase mt-0.5">Low Capex Entry</div>
+            <div className="p-2">
+              <div className="font-display text-3xl font-extrabold text-turmeric">₹5 Lakhs</div>
+              <div className="text-xs font-semibold text-ink-soft uppercase mt-0.5 tracking-wider">Low Capex Entry</div>
             </div>
-            <div>
-              <div className="font-display text-3xl font-bold text-turmeric">35 - 45%</div>
-              <div className="text-xs font-semibold text-ink-soft uppercase mt-0.5">Gross Margin</div>
+            <div className="p-2">
+              <div className="font-display text-3xl font-extrabold text-turmeric">35 - 45%</div>
+              <div className="text-xs font-semibold text-ink-soft uppercase mt-0.5 tracking-wider">Gross Margin</div>
             </div>
-            <div>
-              <div className="font-display text-3xl font-bold text-turmeric">25+ Outlets</div>
-              <div className="text-xs font-semibold text-ink-soft uppercase mt-0.5">Proven Network</div>
+            <div className="p-2">
+              <div className="font-display text-3xl font-extrabold text-turmeric">25+ Outlets</div>
+              <div className="text-xs font-semibold text-ink-soft uppercase mt-0.5 tracking-wider">Proven Network</div>
             </div>
-            <div>
-              <div className="font-display text-3xl font-bold text-turmeric">30 - 45 Days</div>
-              <div className="text-xs font-semibold text-ink-soft uppercase mt-0.5">Speed to Launch</div>
+            <div className="p-2">
+              <div className="font-display text-3xl font-extrabold text-turmeric">30 - 45 Days</div>
+              <div className="text-xs font-semibold text-ink-soft uppercase mt-0.5 tracking-wider">Speed to Launch</div>
             </div>
           </motion.div>
         </motion.div>
@@ -308,29 +308,30 @@ export default function Franchise() {
       </section>
 
       {/* 3. Interactive ROI Calculator */}
-      <section id="roi-calculator" className="bg-ink text-cream py-20 px-4 md:px-6 relative overflow-hidden">
+      <section id="roi-calculator" className="bg-gradient-to-br from-ink via-[#24170e] to-[#120b06] text-cream py-20 px-4 md:px-6 relative overflow-hidden border-y border-turmeric/25">
+        <div className="absolute top-1/2 right-0 w-[500px] h-[500px] bg-turmeric/10 rounded-full blur-[140px] pointer-events-none" />
         <div className="container mx-auto max-w-5xl relative z-10 grid md:grid-cols-12 gap-12 items-center">
           {/* Controls */}
           <div className="md:col-span-7 space-y-6">
-            <span className="text-xs font-bold uppercase tracking-widest text-chip bg-white/10 px-3.5 py-1 rounded-full">
+            <span className="text-xs font-bold uppercase tracking-widest text-chip bg-white/10 px-3.5 py-1.5 rounded-full border border-chip/25 shadow-xs">
               Interactive Financial Projection
             </span>
-            <h2 className="font-display text-3xl md:text-5xl font-bold leading-tight">
+            <h2 className="font-display text-3xl md:text-5xl font-black leading-tight tracking-tight">
               Calculate Your Revenue Potential
             </h2>
-            <p className="text-cream/80 text-sm leading-relaxed">
+            <p className="text-cream/80 text-sm leading-relaxed font-normal">
               Select your format and simulate daily footfall to estimate monthly revenue and payback.
             </p>
 
             {/* Model Selector Pills */}
-            <div className="grid grid-cols-3 gap-2 bg-white/5 p-1.5 rounded-2xl border border-white/10">
+            <div className="grid grid-cols-3 gap-2 glass-kerala-dark p-2 rounded-2xl border border-turmeric/25">
               {FRANCHISE_MODELS.map((m) => (
                 <button
                   key={m.id}
                   onClick={() => setSelectedModel(m.id as any)}
                   className={`py-2.5 px-2 rounded-xl text-xs font-bold transition-all text-center cursor-pointer ${
                     selectedModel === m.id
-                      ? "bg-chip text-ink shadow-md"
+                      ? "bg-turmeric text-ink shadow-md scale-102"
                       : "text-cream/70 hover:text-cream"
                   }`}
                 >
@@ -340,7 +341,7 @@ export default function Franchise() {
             </div>
 
             {/* Footfall Slider */}
-            <div className="p-6 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md">
+            <div className="p-6 rounded-3xl glass-kerala-dark border border-turmeric/25 shadow-xl">
               <div className="flex justify-between items-end mb-4">
                 <div>
                   <Label className="text-cream text-sm font-semibold">Expected Daily Footfall</Label>
@@ -358,7 +359,7 @@ export default function Franchise() {
                 step={25}
                 className="py-4"
               />
-              <div className="flex justify-between text-[11px] text-cream/50 mt-1">
+              <div className="flex justify-between text-[11px] text-cream/50 mt-1 font-medium">
                 <span>100 (Quiet Location)</span>
                 <span>750 (High Street)</span>
                 <span>1500 (Metro/Mall Concourse)</span>
@@ -367,19 +368,19 @@ export default function Franchise() {
           </div>
 
           {/* Calculator Output Card */}
-          <div className="md:col-span-5 bg-white text-ink rounded-3xl p-8 shadow-2xl relative">
-            <span className="absolute top-0 right-8 -translate-y-1/2 bg-turmeric text-ink text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+          <div className="md:col-span-5 glass-kerala-card text-ink rounded-3xl p-8 shadow-2xl relative border-2 border-turmeric/40">
+            <span className="absolute top-0 right-8 -translate-y-1/2 bg-turmeric text-ink text-[11px] font-bold px-3.5 py-1 rounded-full uppercase tracking-wider shadow-sm">
               {activeModelData.title}
             </span>
 
             <span className="text-xs uppercase font-bold text-ink-soft tracking-wider block mb-1">
               Estimated Monthly Sales
             </span>
-            <div className="font-display text-4xl md:text-5xl font-bold text-ink mb-6">
+            <div className="font-display text-4xl md:text-5xl font-black text-ink mb-6">
               {formatCurrency(monthlyRevenue)}
             </div>
 
-            <div className="space-y-3 pt-4 border-t border-sand text-xs mb-8">
+            <div className="space-y-3 pt-4 border-t border-sand/80 text-xs mb-8">
               <div className="flex justify-between text-ink-soft">
                 <span>Average Bill Value</span>
                 <span className="font-bold text-ink">₹{activeModelData.avgTicket}</span>
@@ -392,9 +393,9 @@ export default function Franchise() {
                 <span>Est. Rent, Utilities & Staffing</span>
                 <span className="font-bold text-ink">-{formatCurrency(estimatedRentAndStaff)}</span>
               </div>
-              <div className="flex justify-between text-sm font-bold text-ink pt-3 border-t border-sand">
+              <div className="flex justify-between text-sm font-bold text-ink pt-3 border-t border-sand/80">
                 <span>Projected Monthly Net Profit</span>
-                <span className="text-leaf text-base">{formatCurrency(projectedNetMonthlyProfit)}</span>
+                <span className="text-leaf text-base font-extrabold">{formatCurrency(projectedNetMonthlyProfit)}</span>
               </div>
             </div>
 
@@ -403,7 +404,7 @@ export default function Franchise() {
                 const el = document.getElementById("apply-wizard");
                 el?.scrollIntoView({ behavior: "smooth" });
               }}
-              className="w-full bg-ink text-cream hover:bg-ink-soft rounded-full h-12 font-bold text-xs shadow-md"
+              className="w-full bg-turmeric text-ink hover:bg-turmeric/90 rounded-full h-12 font-bold text-xs shadow-md transition-all hover:scale-105"
             >
               Apply for {activeModelData.title}
             </Button>

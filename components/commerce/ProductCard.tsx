@@ -37,21 +37,21 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <div className="group relative flex flex-col overflow-hidden rounded-3xl bg-white border border-sand shadow-xs transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+    <div className="group relative flex flex-col overflow-hidden rounded-3xl glass-kerala-card border border-sand/80 shadow-xs transition-all duration-300 hover:shadow-[0_20px_40px_-12px_rgba(242,169,0,0.2)] hover:border-turmeric/45 hover:-translate-y-1.5">
       {/* Badges */}
       <div className="absolute top-3 left-3 z-10 flex flex-col gap-1.5">
         {product.isBestseller && (
-          <Badge className="bg-chip text-ink font-bold border-none shadow-xs text-xs">
+          <Badge className="bg-chip/95 text-ink font-bold border border-turmeric/40 shadow-xs text-xs backdrop-blur-xs">
             Bestseller
           </Badge>
         )}
         {product.spiceLevel === "Hot" && (
-          <Badge className="bg-chilli text-white font-bold border-none text-xs">
+          <Badge className="bg-chilli/95 text-white font-bold border-none text-xs backdrop-blur-xs">
             Spicy 🔥
           </Badge>
         )}
         {product.category === "gifting" && (
-          <Badge className="bg-turmeric text-ink font-bold border-none text-xs">
+          <Badge className="bg-turmeric/95 text-ink font-bold border-none text-xs backdrop-blur-xs">
             Gift Box ✨
           </Badge>
         )}
